@@ -44,7 +44,7 @@ class LoginPage:
         if click_login and not self.browser.click_element(**ElementsMap.login_button):
             return Result(error_msg="Failed to click login button")
 
-        if click_login:
-            error = self.browser.get_text(**ElementsMap.error, expl_timeout=2)
+        if click_login and self.browser.element_is_present(**ElementsMap.error, expl_timeout=0.5):
+            error = self.browser.get_text(**ElementsMap.error)
             return Result(success=not error, error_msg=error or None)
         return Result(success=True)

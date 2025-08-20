@@ -8,7 +8,7 @@ log = getLogger(__name__)
 
 
 class Browser:
-    def __init__(self, driver, global_timeout: int = 5):
+    def __init__(self, driver, global_timeout: int = None):
         self.driver = driver
         self.global_timeout = global_timeout  # Default global timeout in seconds
 

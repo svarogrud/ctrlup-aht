@@ -4,4 +4,5 @@ run_tests: ## (Run tests)
 
 .PHONY: serve_reports
 serve_reports: ## (Serve allure reports)
+	# Allure should be installed and available in PATH
 	allure serve /tmp/allure-results

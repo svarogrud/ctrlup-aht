@@ -1,4 +1,4 @@
 remote_webdriver_url: "http://localhost:4444"
 screen_resolution: 1024x768
-global_timeout: 15
+global_timeout: 10
 browser: "firefox"

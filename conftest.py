@@ -1,8 +1,10 @@
 import os
+from logging import getLogger
 from typing import Any, Generator
 
 import pytest
 import yaml
+from pytest_bdd.parser import Step
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
@@ -10,6 +12,8 @@ from constants.general_const import DEFAULT_TIMEZONE
 from utils.browser import Browser
 from utils.config import Config
 from utils.pages import Pages
+
+log = getLogger(__name__)
 
 
 def pytest_addoption(parser):
@@ -44,6 +48,9 @@ def browser(config: Config) -> Generator[Browser, Any, None]:
     width, height = config.screen_resolution.split("x")
     options = webdriver.ChromeOptions()
     # Arguments
+    options.add_argument("--incognito")  # run in incognito mode
+    options.add_argument("--no-default-browser-check")
+    options.add_argument("--no-first-run")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-gpu")
     options.add_argument(f"--window-size={width},{height}")
@@ -52,6 +59,7 @@ def browser(config: Config) -> Generator[Browser, Any, None]:
         options.add_argument("--headless=new")
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-software-rasterizer")
+    options.add_argument("--disable-save-password-bubble")
 
     # Snooze the "Change password" or "Save password" prompt
     options.add_experimental_option("prefs", {
@@ -82,9 +90,9 @@ def browser(config: Config) -> Generator[Browser, Any, None]:
         raise NotImplementedError("Firefox browser is not supported yet.")
     else:
         raise NotImplementedError(f"Unknown browser: {config.browser}")
-    # set up IMPLICIT timeout
-    driver.implicitly_wait(config.global_timeout)
-    # Uncomment to maximize the browser window
+    # set up IMPLICIT timeout if needed
+    # driver.implicitly_wait(config.global_timeout)
+    # Maximize the browser window if needed
     # driver.maximize_window()
     yield Browser(driver=driver, global_timeout=config.global_timeout)
 
@@ -96,3 +104,12 @@ def browser(config: Config) -> Generator[Browser, Any, None]:
 def pages(browser, config: Config):
     """Get instance of Pages object with all pages."""
     return Pages(browser)
+
+
+def pytest_bdd_before_step_call(request,
+                                feature,
+                                scenario,
+                                step: Step,
+                                *_):  # noqa
+    """Log current step start."""
+    log.info(f'Starting step: "{step.name}"')
