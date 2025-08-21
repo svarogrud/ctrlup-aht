@@ -1,0 +1,7 @@
+browser: "chrome"
+screen_resolution: 1920x1080
+global_timeout: 7
+remote_webdriver_url: null
+airportgap_data:
+  service_url: "https://airportgap.com"
+  token: "com.airportgap.app"
