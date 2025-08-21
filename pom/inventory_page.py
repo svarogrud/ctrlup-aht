@@ -66,9 +66,9 @@ class InventoryPage:
             error = f"Failed to click 'Add to cart' button for item {item_index}: {str(e)}"
         return Result(success=not error, error_msg=error)
 
-    def get_cart_badge_count(self):
+    def get_cart_badge_count(self) -> Result:
         """Get the count of items in the shopping cart badge.
-        :return: The number of items in the cart badge, or 0 if not found.
+        :return: Result object containing the badge count if successful, or an error message if not.
         """
         badge_count = None
         error = None

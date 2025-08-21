@@ -1,7 +1,6 @@
-import re
+from logging import getLogger
 
 from pytest_bdd import when, then, parsers
-from logging import getLogger
 
 from utils.browser import Browser
 from utils.result import Result
